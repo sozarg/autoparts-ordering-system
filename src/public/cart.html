@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito</title>
+    <link rel="stylesheet" href="/css/client.css">
+</head>
+<body>
+    <header>
+        <div>
+            <strong>Auto Parts</strong> - Cliente <span id="client-name"></span>
+        </div>
+        <nav>
+            <a href="/products.html">Productos</a>
+            <a href="/cart.html">Carrito</a>
+            <a href="/welcome.html">Inicio</a>
+            <a href="/login">Admin</a>
+        </nav>
+        <button id="btn-theme" type="button">Tema</button>
+    </header>
+    <main>
+        <h2>Carrito</h2>
+        <div id="cart-items"></div>
+        <p>Total: <span id="cart-total">$0</span></p>
+        <button id="confirm-cart" type="button">Finalizar compra</button>
+    </main>
+    <script type="module" src="/js/client/cart.js"></script>
+</body>
+</html>

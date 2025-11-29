@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket</title>
+    <link rel="stylesheet" href="/css/client.css">
+</head>
+<body>
+    <header>
+        <div>
+            <strong>Auto Parts</strong> - Ticket
+        </div>
+        <nav>
+            <a href="/welcome.html">Inicio</a>
+            <a href="/products.html">Productos</a>
+            <a href="/login">Admin</a>
+        </nav>
+        <button id="btn-theme" type="button">Tema</button>
+    </header>
+    <main>
+        <h2>Detalle de compra</h2>
+        <p>Cliente: <span id="ticket-name"></span></p>
+        <p>Fecha: <span id="ticket-date"></span></p>
+        <div id="ticket-items"></div>
+        <p>Total: <span id="ticket-total">$0</span></p>
+        <button id="restart" type="button">Volver a empezar</button>
+    </main>
+    <script type="module" src="/js/client/ticket.js"></script>
+</body>
+</html>
