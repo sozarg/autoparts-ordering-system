@@ -1,0 +1,20 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<main>
+    <h2>Modificar producto</h2>
+    <form id="form-modificar">
+        <input type="number" name="id" placeholder="ID" required>
+        <input type="text" name="name" placeholder="Nombre" required>
+        <input type="text" name="type" placeholder="Tipo" required>
+        <input type="number" name="price" placeholder="Precio" required>
+        <input type="text" name="image" placeholder="URL imagen" required>
+        <input type="number" name="active" placeholder="Activo (1/0)" required>
+        <button type="submit">Actualizar</button>
+    </form>
+    <pre id="resultado-modificar"></pre>
+</main>
+
+<script src="/js/update.js"></script>
+
+<%- include('partials/footer') %>

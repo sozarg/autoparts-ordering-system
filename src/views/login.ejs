@@ -1,0 +1,13 @@
+<%- include('partials/head') %>
+<main>
+    <h2>Login administrador</h2>
+    <% if (error) { %>
+        <p style="color:red;"><%= error %></p>
+    <% } %>
+    <form action="/login" method="POST">
+        <input type="email" name="correo" placeholder="Correo" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Ingresar</button>
+    </form>
+</main>
+<%- include('partials/footer') %>

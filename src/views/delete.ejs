@@ -1,0 +1,15 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<main>
+    <h2>Eliminar producto</h2>
+    <form id="form-eliminar">
+        <input type="number" name="id" placeholder="ID de producto" required>
+        <button type="submit">Eliminar</button>
+    </form>
+    <pre id="resultado-eliminar"></pre>
+</main>
+
+<script src="/js/delete.js"></script>
+
+<%- include('partials/footer') %>

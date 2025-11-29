@@ -1,0 +1,15 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<main>
+    <h2>Consultar producto por ID</h2>
+    <form id="form-buscar">
+        <input type="number" name="id" placeholder="ID de producto" required>
+        <button type="submit">Buscar</button>
+    </form>
+    <pre id="resultado"></pre>
+</main>
+
+<script src="/js/get.js"></script>
+
+<%- include('partials/footer') %>

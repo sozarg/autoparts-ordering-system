@@ -1,0 +1,22 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<main>
+    <h1>Lista de productos</h1>
+    <div id="contenedor-productos">
+        <% if (productos && productos.length > 0) { %>
+            <% productos.forEach(prod => { %>
+                <div class="card-producto">
+                    <img src="<%= prod.imagen %>" alt="<%= prod.nombre %>">
+                    <h5><%= prod.nombre %></h5>
+                    <p>Id: <%= prod.id %></p>
+                    <p>$<%= prod.precio %></p>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No hay productos cargados.</p>
+        <% } %>
+    </div>
+</main>
+
+<%- include('partials/footer') %>
