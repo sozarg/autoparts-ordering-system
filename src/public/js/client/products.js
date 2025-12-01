@@ -135,11 +135,15 @@ function addToCart(prod) {
 async function init() {
     initThemeToggle();
 
-    
     if (!IS_ADMIN) {
         const name = localStorage.getItem("customerName");
-        if (document.getElementById("client-name")) {
-            document.getElementById("client-name").textContent = name || "Invitado";
+        if (!name) {
+            window.location.href = "welcome.html";
+            return;
+        }
+        const nameEl = document.getElementById("client-name");
+        if (nameEl) {
+            nameEl.textContent = name;
         }
     }
 
