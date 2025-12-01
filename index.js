@@ -7,6 +7,7 @@ const SESSION_KEY = environments.session_key;
 
 import cors from "cors";
 import session from "express-session";
+import bcrypt from "bcryptjs";
 
 import { loggerUrl } from "./src/api/middlewares/middlewares.js";
 import { productRoutes, viewRoutes } from "./src/api/routes/index.js";
@@ -46,7 +47,8 @@ app.post("/api/users", async (req, res) => {
         if (!correo || !password) {
             return res.status(400).json({ message: "Datos invalidos" });
         }
-        await UserModel.insertUser(correo, password);
+        const passwordHash = await bcrypt.hash(password, 10);
+        await UserModel.insertUser(correo, passwordHash);
         res.status(201).json({ message: "Usuario creado con exito" });
     } catch (error) {
         console.error(error);
