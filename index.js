@@ -1,5 +1,5 @@
 import express from "express";
-const app = express(); // Instancia principal de la app Express
+const app = express();
 
 import environments from "./src/api/config/environments.js";
 const PORT = environments.port;
@@ -10,8 +10,8 @@ import session from "express-session";
 
 import { loggerUrl } from "./src/api/middlewares/middlewares.js";
 import { productRoutes, viewRoutes } from "./src/api/routes/index.js";
+import salesRoutes from "./src/api/routes/sales.routes.js";
 import { join, __dirname } from "./src/api/utils/index.js";
-import connection from "./src/api/database/db.js"; // Inicializa el pool de MySQL
 import UserModel from "./src/api/models/user.models.js";
 
 app.use(cors());
@@ -25,12 +25,19 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.use((req, res, next) => {
+    res.locals.usuario = req.session.user || null;
+    next();
+});
+
 app.use(express.static(join(__dirname, "src/public")));
 
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "src/views"));
-
+app.disable('view cache');
+// Rutas
 app.use("/api/products", productRoutes);
+app.use("/api/sales", salesRoutes); 
 app.use("/", viewRoutes);
 
 app.post("/api/users", async (req, res) => {

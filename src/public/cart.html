@@ -3,28 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito</title>
+    <title>Tu Carrito</title>
     <link rel="stylesheet" href="/css/client.css">
 </head>
 <body>
+
     <header>
-        <div>
-            <strong>Auto Parts</strong> - Cliente <span id="client-name"></span>
-        </div>
+        <div class="logo">AutoParts</div>
         <nav>
-            <a href="/products.html">Productos</a>
-            <a href="/cart.html">Carrito</a>
-            <a href="/welcome.html">Inicio</a>
-            <a href="/login">Admin</a>
+            <a href="products.html">Seguir comprando</a>
         </nav>
-        <button id="btn-theme" type="button">Tema</button>
     </header>
+
     <main>
-        <h2>Carrito</h2>
-        <div id="cart-items"></div>
-        <p>Total: <span id="cart-total">$0</span></p>
-        <button id="confirm-cart" type="button">Finalizar compra</button>
+        <div class="section-header">
+            <h1>Carrito de Compras</h1>
+            <span id="client-name" style="color: #666;">Cliente</span>
+        </div>
+
+        <div class="card">
+            <div id="cart-items"></div>
+
+            <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #ddd;">
+
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 1.2rem; font-weight: bold;">
+                <span>Total:</span>
+                <span id="cart-total">$0</span>
+            </div>
+
+            <button id="confirm-cart" style="width: 100%; margin-top: 1rem; padding: 1rem;">
+                Confirmar Compra
+            </button>
+        </div>
     </main>
+
     <script type="module" src="/js/client/cart.js"></script>
 </body>
 </html>

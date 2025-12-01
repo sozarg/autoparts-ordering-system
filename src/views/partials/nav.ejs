@@ -1,14 +1,22 @@
-<nav>
-    <ul>
-        <li><a href="/index">Ver</a></li>
-        <li><a href="/consultar">Consultar id</a></li>
-        <li><a href="/crear">Crear</a></li>
-        <li><a href="/modificar">Modificar</a></li>
-        <li><a href="/eliminar">Eliminar</a></li>
-        <li>
-            <form action="/logout" method="POST" style="display:inline;">
-                <button type="submit">Logout</button>
+<header style="padding: 15px; background-color: #fff; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+    <div class="logo">
+        <a href="/" style="font-weight: bold; font-size: 1.4rem; text-decoration: none; color: #333;">
+            AutoParts System
+        </a>
+    </div>
+
+    <nav style="display: flex; gap: 20px; align-items: center;">
+        <% if (locals.usuario) { %>
+            <span style="color: #0066cc; font-weight: bold;">Hola, Admin</span>
+            <a href="/" style="text-decoration: none; color: #444;">Dashboard</a>
+            <a href="/crear" style="text-decoration: none; color: #444;">+ Nuevo Producto</a>
+            <form action="/logout" method="POST" style="margin: 0;">
+                <button type="submit" style="background-color: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">Cerrar Sesión</button>
             </form>
-        </li>
-    </ul>
-</nav>
+        <% } else { %>
+            <span id="client-name" style="color: #666;">Invitado</span>
+            <a href="cart.html" style="text-decoration: none; color: #333;">🛒 Ver Carrito</a>
+            <a href="/login" style="text-decoration: none; color: white; background-color: #333; padding: 8px 15px; border-radius: 4px;">Soy Admin</a>
+        <% } %>
+    </nav>
+</header>

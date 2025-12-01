@@ -5,73 +5,106 @@ import { createSale } from "./api.js";
 function renderCart() {
     const container = document.getElementById("cart-items");
     const totalEl = document.getElementById("cart-total");
-    const cart = getCart();
+    const cart = getCart(); 
+
     container.innerHTML = "";
     let total = 0;
 
+    if (cart.length === 0) {
+        container.innerHTML = "<p style='text-align: center; padding: 2rem; color: #666;'>El carrito está vacío</p>";
+    }
+
     cart.forEach((item) => {
-        total += item.price * item.quantity;
+        
+        const nombreProducto = item.nombre || item.name || "Producto sin nombre";
+        const precioProducto = parseFloat(item.precio || item.price || 0);
+
+        total += precioProducto * item.quantity;
+
         const row = document.createElement("div");
         row.className = "cart-item";
+
         row.innerHTML = `
-            <span>${item.name}</span>
-            <div class="qty">
-                <button class="dec">-</button>
-                <span>${item.quantity}</span>
-                <button class="inc">+</button>
+            <div style="flex: 1;">
+                <span style="font-weight: 500;">${nombreProducto}</span>
             </div>
-            <span>$${item.price * item.quantity}</span>
+            
+            <div class="qty" style="margin: 0 1rem;">
+                <button class="btn-delete" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                    Eliminar
+                </button>
+            </div>
+            
+            <div style="font-weight: bold; min-width: 80px; text-align: right;">
+                $${precioProducto}
+            </div>
         `;
-        row.querySelector(".inc").addEventListener("click", () => changeQty(item.id, 1));
-        row.querySelector(".dec").addEventListener("click", () => changeQty(item.id, -1));
+
+        row.querySelector(".btn-delete").addEventListener("click", () => removeItem(item.id));
+
         container.appendChild(row);
     });
 
     totalEl.textContent = `$${total}`;
 }
 
-function changeQty(id, delta) {
-    const cart = getCart().map((item) => {
-        if (item.id === id) {
-            return { ...item, quantity: Math.max(0, item.quantity + delta) };
-        }
-        return item;
-    }).filter((i) => i.quantity > 0);
-    saveCart(cart);
-    renderCart();
+function removeItem(id) {
+    let cart = getCart();
+    cart = cart.filter(item => item.id !== id); 
+    saveCart(cart); 
+    renderCart();  
 }
 
 async function confirmCart() {
     const cart = getCart();
-    if (cart.length === 0) return;
+    if (cart.length === 0) {
+        alert("El carrito está vacío");
+        return;
+    }
+
     const proceed = window.confirm("¿Confirmar compra?");
     if (!proceed) return;
 
     const customerName = getName() || "Cliente";
+
     const payload = {
         customerName,
-        items: cart.map((i) => ({ productId: i.id, quantity: i.quantity, price: i.price }))
+        items: cart.map((i) => ({
+            productId: i.id,
+            quantity: 1, 
+            price: parseFloat(i.precio || i.price)
+        }))
     };
 
     const res = await createSale(payload);
+
     if (res && res.saleId) {
         saveLastSale(res.saleId);
+
+        const total = cart.reduce((acc, i) => acc + parseFloat(i.precio || i.price), 0);
+        saveLastTotal(total);
+
+       
+
+        window.location.href = "ticket.html";
+    } else {
+        alert("Error al procesar la venta. Intenta nuevamente.");
     }
-    const total = cart.reduce((acc, i) => acc + i.price * i.quantity, 0);
-    saveLastTotal(total);
-    window.location.href = "ticket.html";
 }
 
 function init() {
     initThemeToggle();
     const name = getName();
-    if (!name) {
-        window.location.href = "welcome.html";
-        return;
+    if (document.getElementById("client-name")) {
+        document.getElementById("client-name").textContent = name || "Invitado";
     }
-    document.getElementById("client-name").textContent = name;
+
     renderCart();
-    document.getElementById("confirm-cart")?.addEventListener("click", confirmCart);
+
+    const btnConfirm = document.getElementById("confirm-cart");
+    if (btnConfirm) {
+        btnConfirm.addEventListener("click", confirmCart);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", init);

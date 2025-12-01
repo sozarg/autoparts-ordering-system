@@ -3,29 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket</title>
+    <title>Ticket de Compra</title>
     <link rel="stylesheet" href="/css/client.css">
+    
 </head>
 <body>
-    <header>
-        <div>
-            <strong>Auto Parts</strong> - Ticket
+
+    <main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+
+        <div class="ticket-container">
+            <h2 style="text-align: center; margin-bottom: 0;">AutoParts</h2>
+            <p style="text-align: center; margin-top: 0; color: #666;">Comprobante de venta</p>
+            <hr>
+
+            <div class="ticket-row">
+                <strong>Cliente:</strong>
+                <span id="ticket-name">---</span>
+            </div>
+            <div class="ticket-row">
+                <strong>Fecha:</strong>
+                <span id="ticket-date">---</span>
+            </div>
+
+            <hr>
+
+            <div id="ticket-items" style="margin: 1rem 0;"></div>
+
+            <hr>
+
+            <div class="ticket-row" style="font-size: 1.2rem;">
+                <strong>TOTAL:</strong>
+                <span id="ticket-total">$0</span>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <p>¡Gracias por su compra!</p>
+                <button id="restart">Volver al Inicio</button>
+            </div>
         </div>
-        <nav>
-            <a href="/welcome.html">Inicio</a>
-            <a href="/products.html">Productos</a>
-            <a href="/login">Admin</a>
-        </nav>
-        <button id="btn-theme" type="button">Tema</button>
-    </header>
-    <main>
-        <h2>Detalle de compra</h2>
-        <p>Cliente: <span id="ticket-name"></span></p>
-        <p>Fecha: <span id="ticket-date"></span></p>
-        <div id="ticket-items"></div>
-        <p>Total: <span id="ticket-total">$0</span></p>
-        <button id="restart" type="button">Volver a empezar</button>
+
     </main>
+
     <script type="module" src="/js/client/ticket.js"></script>
 </body>
 </html>

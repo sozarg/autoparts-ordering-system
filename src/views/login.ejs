@@ -1,13 +1,43 @@
 <%- include('partials/head') %>
-<main>
-    <h2>Login administrador</h2>
-    <% if (error) { %>
-        <p style="color:red;"><%= error %></p>
-    <% } %>
-    <form action="/login" method="POST">
-        <input type="email" name="correo" placeholder="Correo" required>
-        <input type="password" name="password" placeholder="Contraseña" required>
-        <button type="submit">Ingresar</button>
-    </form>
-</main>
-<%- include('partials/footer') %>
+
+<body class="login-body">
+
+    <main class="login-wrapper">
+        <div class="card login-card">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="margin: 0; color: var(--primary);">Bienvenido</h2>
+                <p style="color: #666; margin-top: 0.5rem;">Ingresa tus credenciales</p>
+            </div>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div style="background-color: #ffebee; color: #c62828; padding: 0.75rem; border-radius: 4px; margin-bottom: 1.5rem; text-align: center; border: 1px solid #ef9a9a; font-size: 0.9rem;">
+                    ⚠️ <%= error %>
+                </div>
+            <% } %>
+
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="ej: admin@test.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" style="width: 100%; margin-top: 1rem; padding: 0.8rem;">
+                    Ingresar al Sistema
+                </button>
+            </form>
+            
+            <div style="margin-top: 2rem; text-align: center; font-size: 0.8rem; color: #aaa;">
+                AutoParts System v1.0
+            </div>
+        </div>
+    </main>
+    <script>
+    localStorage.removeItem("customerName");
+    localStorage.removeItem("cart");
+    </script>
+</body>

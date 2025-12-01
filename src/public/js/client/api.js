@@ -33,3 +33,26 @@ export async function createSale(payload) {
         return null;
     }
 }
+
+export async function deleteProductAPI(id) {
+    
+    if (!confirm("¿Estás seguro de eliminar este producto?")) return false;
+
+    try {
+        const res = await fetch(`${API_BASE}/products/${id}`, {
+            method: "DELETE"
+        });
+
+        if (res.ok) {
+            alert("Producto eliminado correctamente");
+            return true;
+        } else {
+            const err = await res.json();
+            alert("Error: " + (err.message || "No se pudo eliminar"));
+            return false;
+        }
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}

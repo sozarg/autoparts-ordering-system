@@ -1,22 +1,27 @@
-<%- include('partials/head') %>
-<%- include('partials/nav') %>
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoParts - Catálogo</title>
+    <link rel="stylesheet" href="/css/client.css">
+</head>
+<body>
 
-<main>
-    <h1>Lista de productos</h1>
-    <div id="contenedor-productos">
-        <% if (productos && productos.length > 0) { %>
-            <% productos.forEach(prod => { %>
-                <div class="card-producto">
-                    <img src="<%= prod.imagen %>" alt="<%= prod.nombre %>">
-                    <h5><%= prod.nombre %></h5>
-                    <p>Id: <%= prod.id %></p>
-                    <p>$<%= prod.precio %></p>
-                </div>
-            <% }) %>
-        <% } else { %>
-            <p>No hay productos cargados.</p>
-        <% } %>
-    </div>
-</main>
+    <%- include('partials/nav') %>
 
-<%- include('partials/footer') %>
+    <input type="hidden" id="is-admin" value="<%= locals.usuario ? 'true' : 'false' %>">
+
+    <main>
+        <div class="section-header" style="margin-bottom: 2rem; background: none; padding-left: 0;">
+            <h1 style="margin: 0;">Catálogo de Productos</h1>
+        </div>
+
+        <div id="autoparts"></div>
+        <div id="services"></div>
+    </main>
+
+    <script type="module" src="/js/client/products.js"></script>
+
+</body>
+</html>

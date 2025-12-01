@@ -1,2 +1,7 @@
+.vs/
+*.user
+*.suo
+
 node_modules/
+
 .env

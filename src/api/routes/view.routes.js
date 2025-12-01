@@ -6,37 +6,71 @@ import UserModel from "../models/user.models.js";
 import { requireLogin } from "../middlewares/middlewares.js";
 
 router.get("/login", (req, res) => {
+    if (req.session.user) {
+        console.log(">> Login GET: Usuario ya logueado, redirigiendo a /");
+        return res.redirect("/");
+    }
     res.render("login", { error: null });
 });
 
 router.post("/login", async (req, res) => {
     const { correo, password } = req.body;
+
+    console.log(`>> Intento de login con: ${correo} y pass: ${password}`);
+
     try {
-        const [rows] = await UserModel.findByCorreo(correo);
-        if (rows.length === 0 || rows[0].password !== password) {
-            return res.render("login", { error: "Credenciales invalidas" });
+        const result = await UserModel.findByCorreo(correo);
+        console.log(">> Resultado DB crudo:", result);
+
+        const rows = result[0];
+
+        if (!rows || rows.length === 0) {
+            console.log(">> Error: Usuario no encontrado en BD");
+            return res.render("login", { error: "Usuario no encontrado" });
         }
-        req.session.user = { id: rows[0].id, correo: rows[0].correo };
-        res.redirect("/");
+
+        const usuario = rows[0]; 
+        console.log(">> Usuario encontrado:", usuario);
+
+        if (usuario.password != password) {
+            console.log(`>> Error: Contraseña incorrecta. Esperaba: ${usuario.password}, Recibió: ${password}`);
+            return res.render("login", { error: "Contraseña incorrecta" });
+        }
+
+        req.session.user = { id: usuario.id, correo: usuario.correo };
+        console.log(">> Sesión creada, guardando...");
+
+        req.session.save((err) => {
+            if (err) {
+                console.error(">> Error fatal guardando sesión:", err);
+                return res.render("login", { error: "Error de sesión" });
+            }
+            console.log(">> Sesión guardada con éxito. Redirigiendo a /");
+            res.redirect("/");
+        });
+
     } catch (error) {
-        console.error("Error en login", error.message);
-        res.render("login", { error: "Error en login" });
+        console.error(">> Error CATASTRÓFICO en login:", error);
+        res.render("login", { error: "Error interno" });
     }
 });
 
 router.post("/logout", (req, res) => {
+    console.log(">> Cerrando sesión...");
     req.session.destroy(() => {
-        res.redirect("/login");
+        console.log(">> Sesión destruida. Redirigiendo a Welcome.");
+        res.redirect("/welcome.html");
     });
 });
 
-router.get(["/", "/index"], requireLogin, async (req, res) => {
+router.get(["/", "/index"], async (req, res) => {
+    console.log(">> Cargando Dashboard. Usuario en sesión:", req.session.user);
     try {
-        const [rows] = await ProductModel.selectAllProducts();
-        res.render("index", { productos: rows, usuario: req.session.user });
+        res.render("index", {
+            usuario: req.session.user || null
+        });
     } catch (error) {
-        console.error("Error obteniendo productos para la vista", error.message);
-        res.render("index", { productos: [], usuario: req.session.user });
+        res.render("index", { usuario: null });
     }
 });
 
