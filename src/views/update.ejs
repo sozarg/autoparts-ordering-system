@@ -3,12 +3,14 @@
 
 <main>
     <h2>Modificar producto</h2>
-    <form id="form-modificar">
+    <form id="form-modificar" enctype="multipart/form-data">
         <input type="number" name="id" placeholder="ID" required>
         <input type="text" name="name" placeholder="Nombre" required>
         <input type="text" name="type" placeholder="Tipo" required>
         <input type="number" name="price" placeholder="Precio" required>
-        <input type="text" name="image" placeholder="URL imagen" required>
+        <input type="text" name="image" placeholder="URL imagen actual">
+        <label>Nueva imagen (opcional):</label>
+        <input type="file" name="image" accept="image/*">
         <input type="number" name="active" placeholder="Activo (1/0)" required>
         <button type="submit">Actualizar</button>
     </form>

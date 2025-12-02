@@ -29,6 +29,9 @@
                 <button type="submit" style="width: 100%; margin-top: 1rem; padding: 0.8rem;">
                     Ingresar al Sistema
                 </button>
+                <button type="button" id="btn-rapido" style="width: 100%; margin-top: 0.5rem; padding: 0.8rem;">
+                    Acceso rápido
+                </button>
             </form>
             
             <div style="margin-top: 2rem; text-align: center; font-size: 0.8rem; color: #aaa;">
@@ -39,5 +42,10 @@
     <script>
     localStorage.removeItem("customerName");
     localStorage.removeItem("cart");
+    const btnRapido = document.getElementById("btn-rapido");
+    btnRapido?.addEventListener("click", () => {
+        document.getElementById("correo").value = "admin@test.com";
+        document.getElementById("password").value = "1234";
+    });
     </script>
 </body>

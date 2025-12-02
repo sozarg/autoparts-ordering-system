@@ -3,11 +3,12 @@
 
 <main>
     <h2>Crear producto</h2>
-    <form id="form-crear">
+    <form id="form-crear" enctype="multipart/form-data">
         <input type="text" name="name" placeholder="Nombre" required>
         <input type="text" name="type" placeholder="Tipo" required>
         <input type="number" name="price" placeholder="Precio" required>
-        <input type="text" name="image" placeholder="URL imagen" required>
+        <label>Imagen:</label>
+        <input type="file" name="image" accept="image/*" required>
         <button type="submit">Guardar</button>
     </form>
     <pre id="resultado-crear"></pre>

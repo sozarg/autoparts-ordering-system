@@ -38,13 +38,16 @@ export const getProductById = async (req, res) => {
 // POST /api/products
 export const createProduct = async (req, res) => {
     try {
-        const { image, name, price, type } = req.body;
+        const { name, price, type } = req.body;
+        const file = req.file;
 
-        if (!image || !name || !price || !type) {
+        if (!file || !name || !price || !type) {
             return res.status(400).json({ message: "Datos invalidos, asegurate de enviar todos los campos" });
         }
 
-        const [result] = await ProductModel.insertProduct(image, name, price, type);
+        const imagePath = `/uploads/${file.filename}`;
+
+        const [result] = await ProductModel.insertProduct(imagePath, name, price, type);
 
         return res.status(201).json({
             message: "Producto creado con exito",
@@ -59,13 +62,26 @@ export const createProduct = async (req, res) => {
 // PUT /api/products
 export const updateProduct = async (req, res) => {
     try {
-        const { id, name, image, type, price, active } = req.body;
+        const { id, name, type, price, active } = req.body;
+        const file = req.file;
 
-        if (!id || !name || !image || !type || price === undefined || active === undefined) {
+        if (!id || !name || !type || price === undefined || active === undefined) {
             return res.status(400).json({ message: "Faltan campos requeridos" });
         }
 
-        const [result] = await ProductModel.updateProduct(name, image, type, price, active, id);
+        let imagePath = req.body.image;
+
+        if (file) {
+            imagePath = `/uploads/${file.filename}`;
+        } else {
+            const [rows] = await ProductModel.selectProductWhereId(id);
+            if (rows.length === 0) {
+                return res.status(404).json({ message: "Producto no encontrado" });
+            }
+            imagePath = imagePath || rows[0].imagen;
+        }
+
+        const [result] = await ProductModel.updateProduct(name, imagePath, type, price, active, id);
 
         if (result.affectedRows === 0) {
             return res.status(400).json({ message: "No se actualizo el producto" });

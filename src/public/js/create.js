@@ -3,17 +3,11 @@ const salidaCrear = document.getElementById("resultado-crear");
 
 formCrear?.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const payload = {
-        name: formCrear.name.value,
-        type: formCrear.type.value,
-        price: formCrear.price.value,
-        image: formCrear.image.value
-    };
+    const formData = new FormData(formCrear);
     try {
         const res = await fetch("/api/products", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: formData
         });
         const json = await res.json();
         salidaCrear.textContent = JSON.stringify(json, null, 2);
