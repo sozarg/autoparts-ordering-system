@@ -26,8 +26,11 @@
         <label>Nueva imagen (opcional):</label>
         <input type="file" name="image" accept="image/*">
 
-        <label>Activo (1/0)</label>
-        <input type="number" name="active" placeholder="Activo (1/0)" required>
+        <label>Activo</label>
+        <select name="active" required>
+            <option value="1">Sí</option>
+            <option value="0">No</option>
+        </select>
 
         <button type="submit" style="margin-top: 10px;">Actualizar</button>
     </form>

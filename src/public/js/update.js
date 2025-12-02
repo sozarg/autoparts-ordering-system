@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const nameInput = formModificar.querySelector("input[name='name']");
                 const typeInput = formModificar.querySelector("input[name='type']");
                 const priceInput = formModificar.querySelector("input[name='price']");
-                const activeInput = formModificar.querySelector("input[name='active']");
+                const activeInput = formModificar.querySelector("select[name='active']");
                 const existingImage = formModificar.querySelector("input[name='existingImage']");
 
                 if (nameInput) nameInput.value = prod.nombre;
