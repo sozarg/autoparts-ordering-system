@@ -48,7 +48,7 @@ router.post("/logout", (req, res) => {
     });
 });
 
-router.get(["/", "/index"], async (req, res) => {
+router.get(["/", "/index"], requireLogin, async (req, res) => {
     try {
         const [rows] = await ProductModel.selectAllProductsAdmin();
         res.render("index", {

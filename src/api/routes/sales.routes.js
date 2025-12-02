@@ -8,27 +8,26 @@ router.post("/", async (req, res) => {
     const { customerName, items } = req.body;
 
     if (!items || items.length === 0) {
-        return res.status(400).json({ message: "Carrito vacío" });
+        return res.status(400).json({ message: "Carrito vacÃ­o" });
     }
 
     try {
         let total = 0;
 
-        
         items.forEach(item => {
             total += item.price * item.quantity;
         });
 
-       
         const sqlTicket = "INSERT INTO tickets (nombreUsuario, precioTotal) VALUES (?, ?)";
         const [resultTicket] = await connection.query(sqlTicket, [customerName, total]);
         const ticketId = resultTicket.insertId;
 
         for (const item of items) {
-            for (let i = 0; i < item.quantity; i++) {
-                const sqlDetalle = "INSERT INTO productos_tickets (idTicket, idProducto, precio_unitario) VALUES (?, ?, ?)";
-                await connection.query(sqlDetalle, [ticketId, item.productId, item.price]);
-            }
+            const sqlDetalle = `
+                INSERT INTO productos_tickets (idTicket, idProducto, cantidad, precioUnitario)
+                VALUES (?, ?, ?, ?)
+            `;
+            await connection.query(sqlDetalle, [ticketId, item.productId, item.quantity, item.price]);
         }
 
         res.status(201).json({ saleId: ticketId });
