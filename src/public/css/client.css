@@ -267,7 +267,8 @@ input:focus {
 .ticket-container {
     max-width: 400px;
     margin: 0 auto;
-    background: white;
+    background-color: var(--card-bg);
+    color: var(--text-main); 
     padding: 2rem;
     border: 1px dashed #ccc;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
