@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutoParts - Catálogo</title>
     <link rel="stylesheet" href="/css/client.css">
+    <link rel="icon" type="image/jpeg" href="/img/favicon.jpg">
 </head>
 <body>
 
@@ -12,46 +13,73 @@
 
     <main>
         <div class="section-header" style="margin-bottom: 2rem; background: none; padding-left: 0;">
-            <h1 style="margin: 0;">Catálogo de Productos (Admin)</h1>
+            <h1 style="margin: 0;">Catálogo de Productos <%= locals.usuario ? '(Admin)' : '' %></h1>
         </div>
 
         <% if (productos && productos.length > 0) { %>
             <div class="grid">
                 <% productos.forEach(prod => { %>
-                    <div class="card">
-                        <img src="<%= prod.imagen %>" alt="<%= prod.nombre %>" onerror="this.src='https://via.placeholder.com/200?text=Sin+Imagen'">
-                        <h4><%= prod.nombre %></h4>
-                        <p>$<%= prod.precio %></p>
-                        <p>Activo: <%= prod.activo %></p>
-                        <div class="controls" style="margin-top: 10px;">
-                            <a href="/modificar?id=<%= prod.id %>" class="btn-link">Editar</a>
-                            <% if (prod.activo == 1) { %>
-                                <button type="button" onclick="deleteProduct(<%= prod.id %>)">Eliminar</button>
-                            <% } else { %>
-                                <button type="button" onclick="activateProduct(<%= prod.id %>)" style="background: green; color: white;">Reactivar</button>
-                            <% } %>
+                    <% if (locals.usuario || prod.activo == 1) { %>
+                        <div class="card">
+                            <img src="<%= prod.imagen %>" alt="<%= prod.nombre %>" onerror="this.src='https://via.placeholder.com/200?text=Sin+Imagen'">
+                            <div class="card-body">
+                                <h4><%= prod.nombre %></h4>
+                                <p class="price" style="font-weight: bold;">$<%= prod.precio %></p>
+                                
+                                <% if (locals.usuario) { %>
+                                    <p style="font-size: 0.8rem; color: #666;">Activo: <%= prod.activo ? 'Sí' : 'No' %></p>
+                                    <div class="controls" style="margin-top: 10px;">
+                                        <a href="/modificar?id=<%= prod.id %>" class="btn-link" style="background: #ffc107; color: black; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">Editar</a>
+                                        <% if (prod.activo == 1) { %>
+                                            <button type="button" onclick="deleteProduct(<%= prod.id %>)" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                                        <% } else { %>
+                                            <button type="button" onclick="activateProduct(<%= prod.id %>)" style="background: green; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Reactivar</button>
+                                        <% } %>
+                                    </div>
+                                <% } else { %>
+                                    <div class="controls" style="margin-top: 10px;">
+                                        <button type="button" onclick="addToCartLocal('<%= prod.id %>', '<%= prod.nombre %>', '<%= prod.precio %>', '<%= prod.imagen %>')" style="background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; width: 100%;">
+                                            Agregar al Carrito
+                                        </button>
+                                    </div>
+                                <% } %>
+                            </div>
                         </div>
-                    </div>
+                    <% } %>
                 <% }) %>
             </div>
         <% } else { %>
-            <p>No hay productos cargados.</p>
+            <p style="text-align: center; color: #666;">No hay productos cargados.</p>
         <% } %>
     </main>
 
+    <%- include('partials/footer') %>
+
     <script>
+        // Lógica Admin
         async function deleteProduct(id) {
             if (!confirm("¿Eliminar producto?")) return;
             const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
-            if (res.ok) {
-                window.location.reload();
-            }
+            if (res.ok) window.location.reload();
         }
         async function activateProduct(id) {
             if (!confirm("¿Reactivar producto?")) return;
             const res = await fetch(`/api/products/${id}/activate`, { method: "PUT" });
-            if (res.ok) {
-                window.location.reload();
+            if (res.ok) window.location.reload();
+        }
+
+        // Lógica Cliente (Carrito Local)
+        function addToCartLocal(id, nombre, precio, imagen) {
+            let cart = [];
+            try { cart = JSON.parse(localStorage.getItem("cart")) || []; } catch(e) { cart = []; }
+            
+            const found = cart.find(item => item.id == id);
+            if (found) {
+                alert("Ya tienes este producto en el carrito.");
+            } else {
+                cart.push({ id, nombre, precio, quantity: 1, imagen });
+                localStorage.setItem("cart", JSON.stringify(cart));
+                alert("✅ " + nombre + " agregado al carrito");
             }
         }
     </script>

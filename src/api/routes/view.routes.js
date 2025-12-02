@@ -6,6 +6,7 @@ import UserModel from "../models/user.models.js";
 import { requireLogin } from "../middlewares/middlewares.js";
 import bcrypt from "bcryptjs";
 
+
 router.get("/login", (req, res) => {
     if (req.session.user) {
         return res.redirect("/");
@@ -31,9 +32,7 @@ router.post("/login", async (req, res) => {
 
         req.session.user = { id: usuario.id, correo: usuario.correo };
         req.session.save((err) => {
-            if (err) {
-                return res.render("login", { error: "Error de sesión" });
-            }
+            if (err) return res.render("login", { error: "Error de sesión" });
             res.redirect("/");
         });
 
@@ -48,17 +47,21 @@ router.post("/logout", (req, res) => {
     });
 });
 
-router.get(["/", "/index"], requireLogin, async (req, res) => {
+
+router.get(["/", "/index"], async (req, res) => {
     try {
+        
         const [rows] = await ProductModel.selectAllProductsAdmin();
         res.render("index", {
             usuario: req.session.user || null,
             productos: rows
         });
     } catch (error) {
+        
         res.render("index", { usuario: req.session.user || null, productos: [] });
     }
 });
+
 
 router.get("/consultar", requireLogin, (req, res) => res.render("get"));
 router.get("/crear", requireLogin, (req, res) => res.render("create"));
