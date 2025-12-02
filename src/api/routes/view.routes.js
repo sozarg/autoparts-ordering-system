@@ -50,11 +50,13 @@ router.post("/logout", (req, res) => {
 
 router.get(["/", "/index"], async (req, res) => {
     try {
+        const [rows] = await ProductModel.selectAllProductsAdmin();
         res.render("index", {
-            usuario: req.session.user || null
+            usuario: req.session.user || null,
+            productos: rows
         });
     } catch (error) {
-        res.render("index", { usuario: null });
+        res.render("index", { usuario: req.session.user || null, productos: [] });
     }
 });
 

@@ -10,18 +10,51 @@
 
     <%- include('partials/nav') %>
 
-    <input type="hidden" id="is-admin" value="<%= locals.usuario ? 'true' : 'false' %>">
-
     <main>
         <div class="section-header" style="margin-bottom: 2rem; background: none; padding-left: 0;">
-            <h1 style="margin: 0;">Catálogo de Productos</h1>
+            <h1 style="margin: 0;">Catálogo de Productos (Admin)</h1>
         </div>
 
-        <div id="autoparts"></div>
-        <div id="services"></div>
+        <% if (productos && productos.length > 0) { %>
+            <div class="grid">
+                <% productos.forEach(prod => { %>
+                    <div class="card">
+                        <img src="<%= prod.imagen %>" alt="<%= prod.nombre %>" onerror="this.src='https://via.placeholder.com/200?text=Sin+Imagen'">
+                        <h4><%= prod.nombre %></h4>
+                        <p>$<%= prod.precio %></p>
+                        <p>Activo: <%= prod.activo %></p>
+                        <div class="controls" style="margin-top: 10px;">
+                            <a href="/modificar?id=<%= prod.id %>" class="btn-link">Editar</a>
+                            <% if (prod.activo == 1) { %>
+                                <button type="button" onclick="deleteProduct(<%= prod.id %>)">Eliminar</button>
+                            <% } else { %>
+                                <button type="button" onclick="activateProduct(<%= prod.id %>)" style="background: green; color: white;">Reactivar</button>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <p>No hay productos cargados.</p>
+        <% } %>
     </main>
 
-    <script type="module" src="/js/client/products.js"></script>
+    <script>
+        async function deleteProduct(id) {
+            if (!confirm("¿Eliminar producto?")) return;
+            const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+            if (res.ok) {
+                window.location.reload();
+            }
+        }
+        async function activateProduct(id) {
+            if (!confirm("¿Reactivar producto?")) return;
+            const res = await fetch(`/api/products/${id}/activate`, { method: "PUT" });
+            if (res.ok) {
+                window.location.reload();
+            }
+        }
+    </script>
 
 </body>
 </html>

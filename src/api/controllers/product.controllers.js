@@ -94,3 +94,17 @@ export const removeProduct = async (req, res) => {
         return res.status(500).json({ message: `Error al eliminar un producto con id ${req.params.id}` });
     }
 };
+
+export const activateProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [result] = await ProductModel.activateProduct(id);
+        if (result.affectedRows === 0) {
+            return res.status(400).json({ message: "No se pudo activar el producto" });
+        }
+        return res.status(200).json({ message: `Producto con id ${id} activado correctamente` });
+    } catch (error) {
+        console.error("Error activando producto", error.message);
+        return res.status(500).json({ message: "Error interno al activar producto" });
+    }
+};
