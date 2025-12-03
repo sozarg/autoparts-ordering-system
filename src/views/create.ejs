@@ -5,7 +5,12 @@
     <h2>Crear producto</h2>
     <form id="form-crear" enctype="multipart/form-data">
         <input type="text" name="name" placeholder="Nombre" required>
-        <input type="text" name="type" placeholder="Tipo" required>
+        <label>Tipo</label>
+        <select name="type" required>
+            <option value="" disabled selected>Seleccione una categoría</option>
+            <option value="Autoparte">Autoparte</option>
+            <option value="Servicio">Servicio</option>
+        </select>
         <input type="number" name="price" placeholder="Precio" required>
         <label>Imagen:</label>
         <input type="file" name="image" accept="image/*" required>

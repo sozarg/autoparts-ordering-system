@@ -27,7 +27,14 @@
                                 <p class="price" style="font-weight: bold;">$<%= prod.precio %></p>
                                 
                                 <% if (locals.usuario) { %>
-                                    <p style="font-size: 0.8rem; color: #666;">Activo: <%= prod.activo ? 'Sí' : 'No' %></p>
+                                    <p style="font-size: 0.8rem; color: #666; display: flex; align-items: center; gap: 5px;">
+                                        Activo:
+                                        <% if (prod.activo == 1) { %>
+                                            <span style="height: 10px; width: 10px; background-color: var(--success); border-radius: 50%; display: inline-block;"></span>
+                                        <% } else { %>
+                                            <span style="height: 10px; width: 10px; background-color: var(--danger); border-radius: 50%; display: inline-block;"></span>
+                                        <% } %>
+                                    </p>
                                     <div class="controls" style="margin-top: 10px;">
                                         <a href="/modificar?id=<%= prod.id %>" class="btn-link" style="background: #ffc107; color: black; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">Editar</a>
                                         <% if (prod.activo == 1) { %>

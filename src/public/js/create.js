@@ -10,7 +10,12 @@ formCrear?.addEventListener("submit", async (e) => {
             body: formData
         });
         const json = await res.json();
-        salidaCrear.textContent = JSON.stringify(json, null, 2);
+        if (res.ok) {
+            alert(`Producto creado con ID: ${json.productId}`);
+            window.location.href = "/"; // redirigfe dashboard ver producto
+} else {
+    salidaCrear.textContent = json.message || "Error desconocido";
+}
     } catch (error) {
         salidaCrear.textContent = "Error creando producto";
     }
